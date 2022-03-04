@@ -36,12 +36,10 @@ const putchar_t = fn(u8) callconv(.C) void;
 const fruitboot_blob_t = fn(putchar_t, *fruitboot) callconv(.C) noreturn;
 
 export fn _start(putchar: putchar_t, _: *fruitboot) linksection(".text.entry") noreturn {
-    while (true) {
-        putchar('x');
-    }
     page_size = sabaton.paging.detect_page_size();
-    sabaton.fw_cfg.init_from_dtb();
-    @call(.{ .modifier = .always_inline }, sabaton.main, .{});
+    io.do_putchr = putchar;
+    @panic("byeee!");
+    // @call(.{ .modifier = .always_inline }, sabaton.main, .{});
 }
 
 pub fn get_kernel() [*]u8 {
@@ -64,5 +62,6 @@ pub fn map_platform(_: *sabaton.paging.Root) void {
 
 pub fn add_platform_tags(kernel_header: *sabaton.Stivale2hdr) void {
     _ = kernel_header;
-    sabaton.add_tag(&sabaton.near("devicetree_tag").addr(sabaton.Stivale2tag)[0]);
+    @panic("TODO: add_platform_tags");
+    // sabaton.add_tag(&sabaton.near("devicetree_tag").addr(sabaton.Stivale2tag)[0]);
 }

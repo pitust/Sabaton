@@ -42,13 +42,13 @@ fn freestanding_target(elf: *std.build.LibExeObjStep, arch: std.Target.Cpu.Arch,
 }
 
 fn executable_common(b: *Builder, exec: *std.build.LibExeObjStep, board_name: []const u8) void {
-    exec.setBuildMode(.ReleaseSmall);
+    exec.setBuildMode(.Debug);
 
     var options = b.addOptions();
     options.addOption([]const u8, "board_name", board_name);
     exec.addOptions("build_options", options);
 
-    exec.setBuildMode(.ReleaseSmall);
+    exec.setBuildMode(.Debug);
     if (@hasField(@TypeOf(exec.*), "want_lto"))
         exec.want_lto = false;
 
@@ -101,7 +101,7 @@ fn assembly_blob(b: *Builder, arch: std.Target.Cpu.Arch, name: []const u8, asm_f
     elf.addAssemblyFile(asm_file);
 
     freestanding_target(elf, arch, false);
-    elf.setBuildMode(.ReleaseSafe);
+    elf.setBuildMode(.Debug);
 
     elf.setMainPkgPath("src/");
     elf.setOutputDir(b.cache_root);

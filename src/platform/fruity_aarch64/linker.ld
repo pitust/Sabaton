@@ -8,7 +8,7 @@ PHDRS {
 
 
 SECTIONS {
-    . = 0x810000000;
+    . = 0x200000000;
     .blob : {
         *(.text.entry)
         *(.text.smp_stub)
